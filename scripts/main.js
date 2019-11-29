@@ -1,36 +1,5 @@
-let gridContainer = document.getElementById('main-grid')
-
-
-window.addEventListener('keydown', function (event) {
-    let key = event.key
-    if (key !== 'ArrowUp' && key !== 'ArrowDown' && key !== 'ArrowLeft' && key !== 'ArrowRight') return
-    switch (key) {
-        case 'ArrowUp':
-            nextDirection = 0
-            break
-        case 'ArrowRight':
-            nextDirection = 1
-            break
-        case 'ArrowDown':
-            nextDirection = 2
-            break
-        case 'ArrowLeft':
-            nextDirection = 3
-            break
-    }
-})
-
-
-let rows = []
-let fruit = []
-let snakeCoords = [0, 0] 
-let direction = 1
-let nextDirection = null
-
-let moveTime = 75
-
 function createCells () {
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < gridSize; i++) {
         let row = document.createElement('div')
         row.className = 'row'
         row.id = 'row-' + i
@@ -41,7 +10,7 @@ function createCells () {
         }
         rows.push(rowObj)
         
-        for (let o = 0; o < 25; o++) {
+        for (let o = 0; o < gridSize; o++) {
             let cell = document.createElement('div')
             cell.className = 'cell'
             cell.id = 'cell-' + o
@@ -52,24 +21,38 @@ function createCells () {
 }
 
 function createFruit() {
-    fruit[0] = Math.floor(Math.random() * 1000) % 25
-    fruit[1] = Math.floor(Math.random() * 1000) % 25
+    fruit[0] = Math.floor(Math.random() * 1000) % gridSize
+    fruit[1] = Math.floor(Math.random() * 1000) % gridSize
     rows[fruit[0]].cells[fruit[1]].classList.add('fruit')
 }
+function removeFruit() {
+    rows[fruit[0]].cells[fruit[1]].classList.remove('fruit')
+    fruit = []
+}
 
-function setSnake () {
-    rows[snakeCoords[0]].cells[snakeCoords[1]].classList.add('snake')
+function paintSnake () {
+    rows[snakeHead[0]].cells[snakeHead[1]].classList.add('snake')
+    snakeBody.forEach(coord => {
+        rows[coord[0]].cells[coord[1]].classList.add('snake')
+    })
 }
 function clearSnake () {
-    rows[snakeCoords[0]].cells[snakeCoords[1]].classList.remove('snake')
+    rows[snakeHead[0]].cells[snakeHead[1]].classList.remove('snake')
+    snakeBody.forEach(coord => {
+        rows[coord[0]].cells[coord[1]].classList.remove('snake')
+    })
+}
+function paintCell (cell) {
+    rows[cell[0]].cells[cell[1]].classList.add('snake')
+}
+function clearCell (cell) {
+    rows[cell[0]].cells[cell[1]].classList.remove('snake')
 }
 
 function moveSnake () {
-    clearSnake()
     let goTo = nextDirection
     if (goTo === null) goTo = direction
 
-    console.log(direction, goTo)
     switch (goTo) {
         case 0:
             if (direction === 2) goTo = direction
@@ -85,29 +68,68 @@ function moveSnake () {
             break
     }
 
+    let newPos = [...snakeHead]
     switch (goTo) {
         case 0:
-            snakeCoords[0]--
+            newPos[0]--
             break
         case 1:
-            snakeCoords[1]++
+            newPos[1]++
             break
         case 2:
-            snakeCoords[0]++
+            newPos[0]++
             break
         case 3:
-            snakeCoords[1]--
+            newPos[1]--
             break
     }
+    snakeBody = [snakeHead, ...snakeBody]
+    clearCell(snakeBody.pop())
+    snakeHead = newPos
+    paintCell(snakeHead)
 
     nextDirection = null
     direction = goTo
-    setSnake()
+    checkFruit()
+    paintSnake()
+}
+
+function checkFruit () {
+    if (snakeHead[0] === fruit[0] && snakeHead[1] === fruit[1]) {
+        eatFruit()
+        growSnake()
+    }
+}
+
+function growSnake () {
+    let newCell = snakeBody.length > 0 ? [...(_.last(snakeBody))] : snakeHead
+    switch (direction) {
+        case 0:
+            newCell[0]--
+            break
+        case 1:
+            newCell[1]--
+            break
+        case 2:
+            newCell[0]++
+            break
+        case 3:
+            newCell[1]++
+            break
+    }
+    snakeBody.push(newCell)
+}
+
+function eatFruit () {
+    counter++
+    setCounter()
+    removeFruit()
+    createFruit()
 }
 
 setInterval(moveSnake, moveTime)
 
 createCells()
 createFruit()
-setSnake()
+paintSnake()
 moveSnake()

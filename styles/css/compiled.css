@@ -34,9 +34,15 @@ body {
 }
 
 .fruit {
-  background: red;
+  background: #f05;
 }
 
 .snake {
   background: green;
+}
+
+#counter {
+  position: absolute;
+  top: 0;
+  right: 1em;
 }
