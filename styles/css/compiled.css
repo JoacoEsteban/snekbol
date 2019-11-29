@@ -1,0 +1,40 @@
+html, body, #main-grid {
+  display: flex;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: arial;
+  font-size: 5em;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+#main-grid {
+  border: 2px solid red;
+  width: 500px;
+  height: 500px;
+  flex-direction: column;
+  background-image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F472355665986338816%2FL5EmFV7q_400x400.png&f=1&nofb=1";
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  outline: 1px solid #fff;
+  width: 20px;
+  height: 20px;
+}
+
+.fruit {
+  background: red;
+}
