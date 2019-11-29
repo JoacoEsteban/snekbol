@@ -20,18 +20,20 @@ body {
     width: 500px;
     height: 500px;
     flex-direction: column;
-    background-image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F472355665986338816%2FL5EmFV7q_400x400.png&f=1&nofb=1';
 }
 .row {
     display: flex;
 }
 .cell {
     $size: 20px;
-    outline: 1px solid #fff;
+    // outline: 1px solid #fff;
     width: $size;
     height: $size;
 }
 
 .fruit {
     background: red;
+}
+.snake {
+    background: green;
 }
