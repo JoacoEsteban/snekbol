@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "live-server && sass styles/scss/main.scss styles/css/compiled.css"
+    "dev": "live-server",
+    "gulp": "gulp default"
   },
   "author": "Joaco Esteban <dev.joaco.esteban@gmail.com>",
   "license": "ISC",

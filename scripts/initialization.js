@@ -6,7 +6,7 @@ let snakeBody = []
 let snakeHead = [0, 0]
 let direction = 1
 let nextDirection = null
-let moveTime = 250
+let moveTime = 100
 let gridSize = 25
 let counter = 0
 

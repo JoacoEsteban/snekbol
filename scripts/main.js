@@ -83,6 +83,8 @@ function moveSnake () {
             newPos[1]--
             break
     }
+    if (isColliding(newPos)) return gameOver()
+
     snakeBody = [snakeHead, ...snakeBody]
     clearCell(snakeBody.pop())
     snakeHead = newPos
@@ -94,6 +96,17 @@ function moveSnake () {
     paintSnake()
 }
 
+function isColliding (coords) {
+    if (coords[0] - gridSize > 0 || coords[0] < 0 || coords[1] - gridSize > 0 || coords[1] < 0) return true
+    for (let i in snakeBody) {
+        let part = snakeBody[i]
+        if (coords[0] === part[0] && coords[1] === part[1]) return true
+    }
+}
+function gameOver () {
+    document.getElementById('game-over').classList.add('show')
+    clearInterval(gameInterval)
+}
 function checkFruit () {
     if (snakeHead[0] === fruit[0] && snakeHead[1] === fruit[1]) {
         eatFruit()
@@ -127,7 +140,7 @@ function eatFruit () {
     createFruit()
 }
 
-setInterval(moveSnake, moveTime)
+let gameInterval = setInterval(moveSnake, moveTime)
 
 createCells()
 createFruit()
