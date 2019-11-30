@@ -140,8 +140,6 @@ function eatFruit () {
     createFruit()
 }
 
-let gameInterval = setInterval(moveSnake, moveTime)
-
 createCells()
 createFruit()
 paintSnake()
