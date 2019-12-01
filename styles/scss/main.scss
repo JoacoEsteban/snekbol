@@ -1,15 +1,23 @@
-html, body, #main-grid {
+html,
+body,
+#main-grid {
     display: flex;
 }
+
+* {
+    font-family: 'Work Sans', sans-serif;
+}
+
 html {
     width: 100vw;
     height: 100vh;
+    overflow: hidden;
 }
+
 body {
     background-color: black;
     color: white;
     font-family: arial;
-    font-size: 5em;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -21,9 +29,11 @@ body {
     height: 500px;
     flex-direction: column;
 }
+
 .row {
     display: flex;
 }
+
 .cell {
     $size: 20px;
     // outline: 1px solid #fff;
@@ -34,24 +44,93 @@ body {
 .fruit {
     background: #f05;
 }
+
 .snake {
     background: green;
 }
 
 #counter {
     position: absolute;
+    font-size: 5em;
     top: 0;
     right: 1em;
 }
+
 .game-over {
     $transition: .5s ease;
     opacity: 0;
     position: absolute;
     transition: opacity $transition, transform $transition;
     transform: scale(.5);
-    
+
     &.show {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+.button-std {
+    text-align: center;
+    $transition: .2s ease;
+    padding: .5em 1em;
+    margin: .5em 1em;
+    background-color: #900;
+    border-radius: .1em;
+    transition: transform $transition;
+    cursor: pointer;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+
+    &:active {
+        transform: scale(.98);
+    }
+}
+
+.modal {
+    font-size: 3em;
+    padding: .5em 1em;
+    position: absolute;
+    background: #444;
+    $height: 80vh;
+    // height: $height;
+    // width: 80vw;
+    $w-padding: 20vw;
+    $h-padding: 20vh;
+    top: $h-padding;
+    left: $w-padding;
+    bottom: $h-padding;
+    right: $w-padding;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    $transition: .5s ease;
+    transition: transform $transition;
+    box-sizing: border-box;
+
+    input {
+        outline: none;
+        border: none;
+        border-bottom: 2px solid white;
+        width: 100%;
+        color: white;
+        font-size: 2em;
+        background-color: transparent;
+    }
+
+    .whole-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    &.hide {
+        pointer-events: none;
+        transform: translateY($height);
+        user-select: none;
     }
 }

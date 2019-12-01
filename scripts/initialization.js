@@ -1,6 +1,5 @@
 let gridContainer = document.getElementById('main-grid')
 let counterObj = document.getElementById('counter')
-document.getElementById('imready-button').onclick = imready
 
 let rows = []
 let fruit = []
@@ -17,8 +16,9 @@ let playerData = null
 
 let onlineInstance = null
 
-function setCounter() {
-    counterObj.innerText = counter
+function setCounter(c) {
+    if (!c) c = counter
+    counterObj.innerText = c
 }
 setCounter()
 
@@ -54,5 +54,3 @@ let gameInterval
 function initGameInterval() {
     let gameInterval = setInterval(moveSnake, moveTime)
 }
-
-login()

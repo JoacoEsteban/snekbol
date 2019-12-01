@@ -1,17 +1,23 @@
-html, body, #main-grid {
+html,
+body,
+#main-grid {
   display: flex;
+}
+
+* {
+  font-family: "Work Sans", sans-serif;
 }
 
 html {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 }
 
 body {
   background-color: black;
   color: white;
   font-family: arial;
-  font-size: 5em;
   width: 100%;
   align-items: center;
   justify-content: center;
@@ -43,6 +49,7 @@ body {
 
 #counter {
   position: absolute;
+  font-size: 5em;
   top: 0;
   right: 1em;
 }
@@ -56,4 +63,57 @@ body {
 .game-over.show {
   opacity: 1;
   transform: scale(1);
+}
+
+.button-std {
+  text-align: center;
+  padding: 0.5em 1em;
+  margin: 0.5em 1em;
+  background-color: #900;
+  border-radius: 0.1em;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+.button-std:hover {
+  transform: scale(1.05);
+}
+.button-std:active {
+  transform: scale(0.98);
+}
+
+.modal {
+  font-size: 3em;
+  padding: 0.5em 1em;
+  position: absolute;
+  background: #444;
+  top: 20vh;
+  left: 20vw;
+  bottom: 20vh;
+  right: 20vw;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+  box-sizing: border-box;
+}
+.modal input {
+  outline: none;
+  border: none;
+  border-bottom: 2px solid white;
+  width: 100%;
+  color: white;
+  font-size: 2em;
+  background-color: transparent;
+}
+.modal .whole-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.modal.hide {
+  pointer-events: none;
+  transform: translateY(80vh);
+  user-select: none;
 }

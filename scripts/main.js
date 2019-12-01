@@ -39,7 +39,6 @@ function paintSnake(snake) {
         snakeHead = snake.head
         snakeBody = snake.body
     }
-    console.log(snake)
     rows[snakeHead[0]].cells[snakeHead[1]].classList.add('snake')
     snakeBody.forEach(coord => {
         rows[coord[0]].cells[coord[1]].classList.add('snake')
@@ -166,9 +165,12 @@ function paintSnakes() {
     let { players, fruit } = onlineInstance
     clearBoard()
     removeFruit
-    players.forEach(({ snake }) => {
-        paintSnake(snake)
+    let mySnake
+    players.forEach((player) => {
+        if (player.id === playerData.id) mySnake = player.snake
+        paintSnake(player.snake)
     })
+    setCounter(mySnake.counter)
     createFruit(fruit)
 }
 

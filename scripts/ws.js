@@ -4,16 +4,18 @@ let ws
 
 let isConnected = false
 
-async function login() {
+async function login(name) {
     try {
         let resp = await axios.post(httpUrl + '/login', {
-            name: 'Cacho'
+            name: name
         })
-        console.log('login sucess', resp.data)
+        console.log('login success', resp.data)
         playerData = resp.data
         initializeWebSocket()
+        return true
     } catch (error) {
         console.error(error)
+        throw error
     }
 }
 
