@@ -1,4 +1,4 @@
-function createCells () {
+function createCells() {
     for (let i = 0; i < gridSize; i++) {
         let row = document.createElement('div')
         row.className = 'row'
@@ -9,7 +9,7 @@ function createCells () {
             cells: []
         }
         rows.push(rowObj)
-        
+
         for (let o = 0; o < gridSize; o++) {
             let cell = document.createElement('div')
             cell.className = 'cell'
@@ -20,36 +20,49 @@ function createCells () {
     }
 }
 
-function createFruit() {
-    fruit[0] = Math.floor(Math.random() * 1000) % gridSize
-    fruit[1] = Math.floor(Math.random() * 1000) % gridSize
-    rows[fruit[0]].cells[fruit[1]].classList.add('fruit')
+function createFruit(fruit) {
+    if (!fruit) {
+        fruit[0] = Math.floor(Math.random() * 1000) % gridSize
+        fruit[1] = Math.floor(Math.random() * 1000) % gridSize
+    }
+    fruitElement = rows[fruit[0]].cells[fruit[1]]
+    fruitElement.classList.add('fruit')
 }
 function removeFruit() {
-    rows[fruit[0]].cells[fruit[1]].classList.remove('fruit')
+    if (!fruitElement) return
+    fruitElement.classList.remove('fruit')
     fruit = []
 }
 
-function paintSnake () {
+function paintSnake(snake) {
+    if (snake) {
+        snakeHead = snake.head
+        snakeBody = snake.body
+    }
+    console.log(snake)
     rows[snakeHead[0]].cells[snakeHead[1]].classList.add('snake')
     snakeBody.forEach(coord => {
         rows[coord[0]].cells[coord[1]].classList.add('snake')
     })
 }
-function clearSnake () {
+function clearSnake(snake) {
+    if (snake) {
+        snakeHead = snake.head
+        snakeBody = snake.body
+    }
     rows[snakeHead[0]].cells[snakeHead[1]].classList.remove('snake')
     snakeBody.forEach(coord => {
         rows[coord[0]].cells[coord[1]].classList.remove('snake')
     })
 }
-function paintCell (cell) {
+function paintCell(cell) {
     rows[cell[0]].cells[cell[1]].classList.add('snake')
 }
-function clearCell (cell) {
+function clearCell(cell) {
     rows[cell[0]].cells[cell[1]].classList.remove('snake')
 }
 
-function moveSnake () {
+function moveSnake() {
     let goTo = nextDirection
     if (goTo === null) goTo = direction
 
@@ -96,25 +109,25 @@ function moveSnake () {
     paintSnake()
 }
 
-function isColliding (coords) {
+function isColliding(coords) {
     if (coords[0] - gridSize > 0 || coords[0] < 0 || coords[1] - gridSize > 0 || coords[1] < 0) return true
     for (let i in snakeBody) {
         let part = snakeBody[i]
         if (coords[0] === part[0] && coords[1] === part[1]) return true
     }
 }
-function gameOver () {
+function gameOver() {
     document.getElementById('game-over').classList.add('show')
     clearInterval(gameInterval)
 }
-function checkFruit () {
+function checkFruit() {
     if (snakeHead[0] === fruit[0] && snakeHead[1] === fruit[1]) {
         eatFruit()
         growSnake()
     }
 }
 
-function growSnake () {
+function growSnake() {
     let newCell = snakeBody.length > 0 ? [...(_.last(snakeBody))] : snakeHead
     switch (direction) {
         case 0:
@@ -133,14 +146,35 @@ function growSnake () {
     snakeBody.push(newCell)
 }
 
-function eatFruit () {
+function eatFruit() {
     counter++
     setCounter()
     removeFruit()
     createFruit()
 }
 
+function clearBoard() {
+    rows.forEach(row => {
+        row.cells.forEach(cell => {
+            cell.classList.remove('snake')
+        })
+    })
+    removeFruit()
+}
+
+function paintSnakes() {
+    let { players, fruit } = onlineInstance
+    clearBoard()
+    removeFruit
+    players.forEach(({ snake }) => {
+        paintSnake(snake)
+    })
+    createFruit(fruit)
+}
+
 createCells()
-createFruit()
-paintSnake()
-moveSnake()
+if (!isOnlineMatch) {
+    createFruit()
+    paintSnake()
+    moveSnake()
+}

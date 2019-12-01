@@ -4,7 +4,7 @@ let ws
 
 let isConnected = false
 
-async function login () {
+async function login() {
     try {
         let resp = await axios.post(httpUrl + '/login', {
             name: 'Cacho'
@@ -25,20 +25,23 @@ function initializeWebSocket() {
         isConnected = true
     }
 
-    ws.onmessage = ({data}) => {
-        console.log(data)
+    ws.onmessage = ({ data }) => {
+        console.log('data')
+        onlineInstance = JSON.parse(data)
+        paintSnakes()
     }
 
 }
-function sendDirection () {
+function sendDirection() {
     if (!isConnected) return
-    ws.send(JSON.stringify({player_id: playerData.id, direction: nextDirection}))
+    ws.send(JSON.stringify({ directive: 'direction', player_id: playerData.id, direction: nextDirection }))
 }
 
-async function imready () {
+async function imready() {
     if (!playerData) return
-    await axios.post(httpUrl + '/im-ready', {
+    ws.send(JSON.stringify({
+        directive: 'im-ready',
         game_id: playerData.game_id,
         player_id: playerData.id
-    })
+    }))
 }
