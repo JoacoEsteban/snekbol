@@ -6,12 +6,17 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./scripts/mobilecheck.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://hammerjs.github.io/dist/hammer.min.js"></script>
     <link rel="stylesheet" href="./styles/css/compiled.css">
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:300,400,700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div id="swipe-container">
+
+    </div>
     <div class="app-container">
 
         <div class="game-container">
@@ -22,7 +27,8 @@
             <div :class="{hide: hideModal}" class="modal">
                 <div class="whole-container">
                     <span class="name">
-                        My snake is called <input type="text" v-model="snakeName" class="snakename">
+                        My snake is called <input @keyup.enter="connect" type="text" v-model="snakeName"
+                            class="snakename">
                     </span>
                     <div class="button-std" @click="connect">
                         Connect

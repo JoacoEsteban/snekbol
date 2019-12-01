@@ -1,5 +1,5 @@
-const httpUrl = 'http://localhost:5000'
-const wsUrl = 'ws://localhost:5000'
+const httpUrl = 'http://192.168.0.42:5000'
+const wsUrl = 'ws://192.168.0.42:5000'
 let ws
 
 let isConnected = false
@@ -40,10 +40,15 @@ function sendDirection() {
 }
 
 async function imready() {
-    if (!playerData) return
-    ws.send(JSON.stringify({
-        directive: 'im-ready',
-        game_id: playerData.game_id,
-        player_id: playerData.id
-    }))
+    if (!playerData) return false
+    try {
+        await ws.send(JSON.stringify({
+            directive: 'im-ready',
+            game_id: playerData.game_id,
+            player_id: playerData.id
+        }))
+        return true
+    } catch (error) {
+        throw error
+    }
 }

@@ -3,19 +3,19 @@ const fs = require('fs')
 const { watch } = require('gulp')
 const sassfile = 'styles/scss/main.scss'
 
-function renderSass () {
+function renderSass() {
     sass.render({
         file: sassfile
-    }, function(err, result) {
-        if (err) throw err
+    }, function (err, result) {
+        if (err) return console.error(err)
         fs.writeFileSync('styles/css/compiled.css', result.css)
     })
 }
 
-watch([sassfile], function(cb) {
-console.log(1, cb)
-  renderSass()
-  cb()
+watch([sassfile], function (cb) {
+    console.log(1, cb)
+    renderSass()
+    cb()
 })
 
 function defaultTask(cb) {

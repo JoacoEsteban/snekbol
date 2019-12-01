@@ -8,15 +8,28 @@ body,
     font-family: 'Work Sans', sans-serif;
 }
 
+:root {
+    --dark-bg: #222;
+    --light-bg: #f2f2f2;
+    --light-button: #2d1;
+    --dark-text: var(--light-bg);
+    --light-text: var(--dark-bg);
+
+    --background-color: var(--light-bg);
+    --text-color: var(--light-text);
+    --button-color: var(--light-button);
+}
+
 html {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
 
+
 body {
-    background-color: black;
-    color: white;
+    background-color: var(--background-color);
+    color: var(--text-color);
     font-family: arial;
     width: 100%;
     align-items: center;
@@ -74,7 +87,7 @@ body {
     $transition: .2s ease;
     padding: .5em 1em;
     margin: .5em 1em;
-    background-color: #900;
+    background-color: var(--button-color);
     border-radius: .1em;
     transition: transform $transition;
     cursor: pointer;
@@ -92,12 +105,13 @@ body {
     font-size: 3em;
     padding: .5em 1em;
     position: absolute;
-    background: #444;
+    background: var(--background-color);
     $height: 80vh;
     // height: $height;
     // width: 80vw;
     $w-padding: 20vw;
     $h-padding: 20vh;
+    box-shadow: .2em .2em .5em #3335;
     top: $h-padding;
     left: $w-padding;
     bottom: $h-padding;
@@ -113,9 +127,9 @@ body {
     input {
         outline: none;
         border: none;
-        border-bottom: 2px solid white;
+        border-bottom: 2px solid var(--background-color);
         width: 100%;
-        color: white;
+        color: var(--text-color);
         font-size: 2em;
         background-color: transparent;
     }
@@ -132,5 +146,16 @@ body {
         pointer-events: none;
         transform: translateY($height);
         user-select: none;
+    }
+}
+
+#swipe-container {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+
+    &.show {
+        pointer-events: all;
     }
 }

@@ -8,6 +8,17 @@ body,
   font-family: "Work Sans", sans-serif;
 }
 
+:root {
+  --dark-bg: #222;
+  --light-bg: #f2f2f2;
+  --light-button: #2d1;
+  --dark-text: var(--light-bg);
+  --light-text: var(--dark-bg);
+  --background-color: var(--light-bg);
+  --text-color: var(--light-text);
+  --button-color: var(--light-button);
+}
+
 html {
   width: 100vw;
   height: 100vh;
@@ -15,8 +26,8 @@ html {
 }
 
 body {
-  background-color: black;
-  color: white;
+  background-color: var(--background-color);
+  color: var(--text-color);
   font-family: arial;
   width: 100%;
   align-items: center;
@@ -69,7 +80,7 @@ body {
   text-align: center;
   padding: 0.5em 1em;
   margin: 0.5em 1em;
-  background-color: #900;
+  background-color: var(--button-color);
   border-radius: 0.1em;
   transition: transform 0.2s ease;
   cursor: pointer;
@@ -85,7 +96,8 @@ body {
   font-size: 3em;
   padding: 0.5em 1em;
   position: absolute;
-  background: #444;
+  background: var(--background-color);
+  box-shadow: 0.2em 0.2em 0.5em #3335;
   top: 20vh;
   left: 20vw;
   bottom: 20vh;
@@ -100,9 +112,9 @@ body {
 .modal input {
   outline: none;
   border: none;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid var(--background-color);
   width: 100%;
-  color: white;
+  color: var(--text-color);
   font-size: 2em;
   background-color: transparent;
 }
@@ -116,4 +128,14 @@ body {
   pointer-events: none;
   transform: translateY(80vh);
   user-select: none;
+}
+
+#swipe-container {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  pointer-events: none;
+}
+#swipe-container.show {
+  pointer-events: all;
 }
