@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div :class="{hide: hideModal}" class="modal">
+    <div :class="{hide}" class="modal">
       <div class="whole-container">
         <span class="name">
           My snake is called
-          <input @keyup.enter="connect" type="text" v-model="snakeName" class="snakename" />
+          <input @keyup.enter="submit" type="text" v-model="snakeName" class="snakename" />
         </span>
-        <div class="button-std" @click="connect">Connect</div>
+        <div class="button-std" @click="submit">Connect</div>
       </div>
       <div id="game-over" class="game-over">Game Over</div>
     </div>
@@ -15,18 +15,17 @@
 
 <script>
 export default {
+  props: {
+    hide: Boolean,
+  },
   data() {
     return {
-      snakeName: "",
-      hideModal: false,
+      snakeName: 'Snek'
     }
   },
   methods: {
-    async imready() {
-      this.isConnected = (await imready()) === true;
-    },
-    async connect() {
-      this.$emit('submit')
+    async submit() {
+      this.$emit('submit', this.snakeName)
     }
   }
 };

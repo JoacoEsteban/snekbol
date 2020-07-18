@@ -1,9 +1,9 @@
 <template>
   <div>
-    <LoginModal @submit="connect" />
+    <login-modal @submit="connect" :hide="hideModal"/>
     <div v-if="!isConnected" @click="imready" class="button-std">I'm Ready</div>
 
-    <div id="swipe-container"></div>
+    <div :class="{show: isConnected}" id="swipe-container"></div>
     <div class="app-container">
         <div class="game-container">
             <div id="counter"></div>
@@ -22,53 +22,50 @@ export default {
   },
   data() {
     return {
-      snakeName: "",
-      hideModal: true,
+      snakeName: '',
+      hideModal: false,
       isConnected: false,
       isMobile: window.isMobile,
       swipeContainerElement: null
     } 
   },
   created() {
-    this.hideModal = true;
-    if (this.isMobile || true) {
-      let element = document.getElementById("swipe-container");
+    if (this.isMobile) {
+      let element = document.getElementById('swipe-container');
       this.swipeContainerElement = element;
       let hammertime = new Hammer.Manager(element);
       let swipe = new Hammer.Swipe();
       hammertime.add([swipe]);
-      hammertime.on("swipe", function({ angle }) {
+      hammertime.on('swipe', function({ angle }) {
         let direction;
         if (angle < 45 && angle > -45) {
-          direction = "ArrowRight";
+          direction = 'ArrowRight';
         } else if (angle < 135 && angle > 45) {
-          direction = "ArrowDown";
+          direction = 'ArrowDown';
         } else if (
           (angle < 180 && angle > 135) ||
           (angle > -180 && angle < -135)
         ) {
-          direction = "ArrowLeft";
+          direction = 'ArrowLeft';
         } else if (angle > -135 && angle < -45) {
-          direction = "ArrowUp";
+          direction = 'ArrowUp';
         }
         console.log(angle, direction);
         inputHandling(direction);
       });
     }
   },
-  watch: {
-    isConnected(val) {
-      if (val) this.swipeContainerElement.classList.add("show");
-      else this.swipeContainerElement.classList.remove("show");
-    }
-  },
   methods: {
     async imready() {
-      this.isConnected = (await imready()) === true;
-    },
-    async connect() {
       try {
-        await login(this.snakeName);
+        this.isConnected = (await CONNECTION.imready()) === true;
+      } catch (error) {
+        console.error('error', error)
+      }
+    },
+    async connect(name) {
+      try {
+        await CONNECTION.login(name);
         this.hideModal = true;
       } catch (error) {
         throw error;
