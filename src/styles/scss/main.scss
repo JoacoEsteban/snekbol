@@ -153,9 +153,7 @@ body {
     position: absolute;
     height: 100vh;
     width: 100vw;
-    pointer-events: none;
-
-    &.show {
-        pointer-events: all;
+    &:not(.show) {
+        pointer-events: none;
     }
 }
