@@ -6,7 +6,7 @@
           My snake is called
           <input @keyup.enter="submit" type="text" v-model="snakeName" class="snakename" />
         </span>
-        <div class="button-std" @click="submit">Connect</div>
+        <button @click="submit">Connect</button>
       </div>
       <div id="game-over" class="game-over">Game Over</div>
     </div>
@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      snakeName: 'Snek'
+      snakeName: 'Snekbol'
     }
   },
   methods: {

@@ -36,7 +36,7 @@ class ConnectionController {
     this.WS.onmessage = ({
       data
     }) => {
-      console.log('data')
+      console.log('data', data)
       SnakeApp.onlineInstance = JSON.parse(data)
       paintSnakes()
     }

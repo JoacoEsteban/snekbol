@@ -1,159 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap');
+@import 'vars';
+@import 'helpers';
+
 html,
 body,
 #main-grid {
-    display: flex;
+  display: flex;
 }
 
 * {
-    font-family: 'Work Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 :root {
-    --dark-bg: #222;
-    --light-bg: #f2f2f2;
-    --light-button: #2d1;
-    --dark-text: var(--light-bg);
-    --light-text: var(--dark-bg);
+  --dark-bg: #222;
+  --light-bg: #f2f2f2;
+  --light-button: #2d1;
+  --dark-text: var(--light-bg);
+  --light-text: var(--dark-bg);
 
-    --background-color: var(--light-bg);
-    --text-color: var(--light-text);
-    --button-color: var(--light-button);
+  --background-color: var(--light-bg);
+  --text-color: var(--light-text);
+  --button-color: var(--light-button);
 }
 
 html {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
+  font-family: 'Source Sans Pro', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 
 
 body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    font-family: arial;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: arial;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 #main-grid {
-    border: 2px solid red;
-    width: 500px;
-    height: 500px;
-    flex-direction: column;
+  border: 2px solid red;
+  width: 500px;
+  height: 500px;
+  flex-direction: column;
 }
 
 .row {
-    display: flex;
+  display: flex;
 }
 
 .cell {
-    $size: 20px;
-    // outline: 1px solid #fff;
-    width: $size;
-    height: $size;
+  $size: 20px;
+  // outline: 1px solid #fff;
+  width: $size;
+  height: $size;
 }
 
 .fruit {
-    background: #f05;
+  background: #f05;
 }
 
 .snake {
-    background: green;
+  background: green;
 }
 
 #counter {
-    position: absolute;
-    font-size: 5em;
-    top: 0;
-    right: 1em;
+  position: absolute;
+  font-size: 5em;
+  top: 0;
+  right: 1em;
 }
 
 .game-over {
-    $transition: .5s ease;
-    opacity: 0;
-    position: absolute;
-    transition: opacity $transition, transform $transition;
-    transform: scale(.5);
+  $transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  transition: opacity $transition, transform $transition;
+  transform: scale(.5);
 
-    &.show {
-        opacity: 1;
-        transform: scale(1);
-    }
+  &.show {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.button-std {
-    text-align: center;
-    $transition: .2s ease;
-    padding: .5em 1em;
-    margin: .5em 1em;
-    background-color: var(--button-color);
-    border-radius: .1em;
-    transition: transform $transition;
-    cursor: pointer;
+button {
+  $transition: var(--button-transition);
+  outline: none;
+  font-weight: bold;
+  font-size: 0.7em;
+  padding: 1em 1.5em;
+  text-align: center;
+  // height: 2em;
+  /* width: 10em; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: 0.1em 0.1em 0.3em 0 rgba(0, 0, 0, 0.4), var(--outline-shadow);
+  border-radius: 2em;
+  color: white;
+  background: black;
+  --local-shadow-transition: var(--button-transition-time) var(--bezier-out);
+  transition: transform $transition, background $transition, opacity $transition, box-shadow var(--local-shadow-transition);
+  cursor: pointer;
+  transform: scale(1);
 
-    &:hover {
-        transform: scale(1.05);
-    }
+  &:hover {
+    transform: scale(1.05);
+    background: var(--button-purple);
+    // color: black;
+  }
 
-    &:active {
-        transform: scale(.98);
-    }
+  &:focus:not(:active) {
+    --local-shadow-transition: #{$transition};
+    --outline-shadow: 0 0 0 4px var(--button-purple);
+  }
+
+  &:active {
+    transform: scale(0.98);
+    background: var(--button-purple);
+    opacity: 0.5;
+  }
+
+  &.accept {
+    background-color: var(--green-accept);
+    color: black;
+  }
+
+  &.cancel {
+    background-color: var(--red-cancel);
+    color: black;
+  }
+
+  &.slim {
+    padding: 0.45em 2em;
+  }
+
+  &.disabled {
+    background-color: #111;
+    color: black;
+    pointer-events: none;
+  }
 }
 
 .modal {
-    font-size: 3em;
-    padding: .5em 1em;
-    position: absolute;
-    background: var(--background-color);
-    $height: 80vh;
-    // height: $height;
-    // width: 80vw;
-    $w-padding: 20vw;
-    $h-padding: 20vh;
-    box-shadow: .2em .2em .5em #3335;
-    top: $h-padding;
-    left: $w-padding;
-    bottom: $h-padding;
-    right: $w-padding;
+  font-size: 3em;
+  padding: .5em 1em;
+  position: absolute;
+  background: var(--background-color);
+  $height: 80vh;
+  // height: $height;
+  // width: 80vw;
+  $w-padding: 20vw;
+  $h-padding: 20vh;
+  box-shadow: .2em .2em .5em #3335;
+  top: $h-padding;
+  left: $w-padding;
+  bottom: $h-padding;
+  right: $w-padding;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  $transition: .5s ease;
+  transition: transform $transition;
+  box-sizing: border-box;
+
+  input {
+    outline: none;
+    border: none;
+    border-bottom: 2px solid var(--background-color);
+    width: 100%;
+    color: var(--text-color);
+    font-size: 2em;
+    background-color: transparent;
+  }
+
+  .whole-container {
     display: flex;
     flex-direction: column;
-    align-content: center;
+    align-items: center;
     justify-content: center;
-    $transition: .5s ease;
-    transition: transform $transition;
-    box-sizing: border-box;
 
-    input {
-        outline: none;
-        border: none;
-        border-bottom: 2px solid var(--background-color);
-        width: 100%;
-        color: var(--text-color);
-        font-size: 2em;
-        background-color: transparent;
-    }
+  }
 
-    .whole-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-    }
-
-    &.hide {
-        pointer-events: none;
-        transform: translateY($height);
-        user-select: none;
-    }
-}
-
-#swipe-container {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    &:not(.show) {
-        pointer-events: none;
-    }
+  &.hide {
+    pointer-events: none;
+    transform: translateY($height);
+    user-select: none;
+  }
 }
