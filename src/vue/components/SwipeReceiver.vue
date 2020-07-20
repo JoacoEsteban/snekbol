@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div v-if="isMobile" :class="{show: isIngame}" ref="swipe-container" class="swipe-container fix-full"></div>
+  <div v-if="isMobile" :class="{show}" ref="swipe-container" class="swipe-container fix-full"></div>
 </div>
 </template>
 
@@ -23,8 +23,11 @@ export default {
     isIngame () {
       return !!this.onlineInstance
     },
+    show () {
+      return this.isPlaying
+    }
   },
-  created() {
+  mounted() {
     this.setHammer()
     $(window).on('keydown', this.onKeyDown)
   },
@@ -35,7 +38,8 @@ export default {
     },
     setHammer() {
       if (!this.isMobile) return
-      this.HAMMERTIME = new Hammer.Manager((this.swipeContainerElement = this.$refs['#swipe-container']))
+      console.log(this.$refs['swipe-container'])
+      this.HAMMERTIME = new Hammer.Manager((this.swipeContainerElement = this.$refs['swipe-container']))
       const swipe = new Hammer.Swipe()
       this.HAMMERTIME.add([swipe])
       this.HAMMERTIME.on('swipe', this.onSwipe)

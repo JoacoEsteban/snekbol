@@ -1,5 +1,7 @@
 import ConnectionController from './ConnectionController'
-window.CONNECTION = new ConnectionController()
+// const url = '192.168.100.15:5000'
+let url;
+window.CONNECTION = new ConnectionController(url)
 
 require('../styles/scss/main.scss');
 require('./mobilecheck')

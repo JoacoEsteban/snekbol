@@ -58,9 +58,11 @@ export default {
       const snakeHead = snake.head
       const snakeBody = snake.body
 
-      this.paint(snakeHead, 'snake')
+      const classNames = 'snake' + (snake.flags.dead ? ' dead' : '')
+
+      this.paint(snakeHead, classNames)
       snakeBody.forEach(coord => {
-        this.paint(coord, 'snake')
+        this.paint(coord, classNames)
       })
     },
     paint (coords, className) {

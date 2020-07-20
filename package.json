@@ -5,11 +5,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "webpack-dev-server"
+    "dev": "webpack-dev-server",
+    "start": "live-server dist",
+    "concurrent": "npm run build && npm run start"
   },
   "author": "Joaco Esteban <dev.joaco.esteban@gmail.com>",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
   "devDependencies": {
     "axios": "^0.19.2",
     "css-loader": "^3.6.0",

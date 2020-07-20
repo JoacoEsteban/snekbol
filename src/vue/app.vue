@@ -16,7 +16,6 @@ export default {
   },
   data() {
     return {
-      snakeName: '',
       hideModal: false,
       isMobile: window.isMobile,
       swipeContainerElement: null,
