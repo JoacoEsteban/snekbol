@@ -9,7 +9,7 @@ body,
 }
 
 * {
-  box-sizing: border-box;
+  // box-sizing: border-box;
 }
 
 :root {
@@ -50,22 +50,23 @@ body {
 
 .row {
   display: flex;
+  > div[cell] {
+    $size: 20px;
+    // outline: 1px solid #fff;
+    width: $size;
+    height: $size;
+    transition: background-color var(--ts-g);
+
+    &.fruit {
+      background-color: #f05;
+    }
+    
+    &.snake {
+      background-color: green;
+    }
+  }
 }
 
-.cell {
-  $size: 20px;
-  // outline: 1px solid #fff;
-  width: $size;
-  height: $size;
-}
-
-.fruit {
-  background: #f05;
-}
-
-.snake {
-  background: green;
-}
 
 #counter {
   position: absolute;

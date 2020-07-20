@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div v-if="isMobile" :class="{show: isConnected}" ref="swipe-container" class="swipe-container fix-full"></div>
+  <div v-if="isMobile" :class="{show: isIngame}" ref="swipe-container" class="swipe-container fix-full"></div>
 </div>
 </template>
 
@@ -9,18 +9,30 @@ export default {
   data() {
     return {
       HAMMERTIME: null,
-      isMobile: window.isMobile
+      isMobile: window.isMobile,
+      allowedDirections: ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight']
     } 
   },
   computed: {
-    isConnected () {
-      return this.$store.state.IS_CONNECTED
-    }
+    onlineInstance () {
+      return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
+    },
+    isPlaying () {
+      return this.onlineInstance && this.onlineInstance.flags.started
+    },
+    isIngame () {
+      return !!this.onlineInstance
+    },
   },
   created() {
     this.setHammer()
+    $(window).on('keydown', this.onKeyDown)
   },
   methods: {
+    onKeyDown ({key}) {
+      if (!this.isIngame) return
+      this.inputHandling(key)
+    },
     setHammer() {
       if (!this.isMobile) return
       this.HAMMERTIME = new Hammer.Manager((this.swipeContainerElement = this.$refs['#swipe-container']))
@@ -43,8 +55,27 @@ export default {
           direction = 'ArrowUp'
         }
         console.log(angle, direction)
-        // inputHandling(direction)
+        this.inputHandling(direction, true)
+      },
+    inputHandling(key, force) {
+      if (!force && !this.allowedDirections.includes(key)) return
+      let nextDirection = 0
+      switch (key) {
+        case 'ArrowUp':
+            nextDirection = 0
+            break
+        case 'ArrowRight':
+            nextDirection = 1
+            break
+        case 'ArrowDown':
+            nextDirection = 2
+            break
+        case 'ArrowLeft':
+            nextDirection = 3
+            break
       }
+      CONNECTION.sendDirection(nextDirection)
+    }
   }
 };
 </script>

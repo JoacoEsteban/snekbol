@@ -1,3 +1,4 @@
+import store from '../vue/store'
 class ConnectionController {
   constructor (BASE_URL = 'localhost:5000') {
     this.BASE_URL = BASE_URL
@@ -13,11 +14,12 @@ class ConnectionController {
   }
   async login(name) {
     try {
-      let resp = await axios.post(this.HTTP_URL + '/login', {
+      const res = await axios.post(this.HTTP_URL + '/login', {
         name: name
       })
-      console.log('login success', resp.data)
-      SnakeApp.playerData = resp.data
+      console.log('login success', res.data)
+      store.commit('SET_PLAYER_DATA', res.data.player)
+      // store.commit('SET_ONLINE_INSTANCE', res.data.game)
       this.initializeWebSocket()
       return true
     } catch (error) {
@@ -31,36 +33,40 @@ class ConnectionController {
     this.WS.onopen = (e) => {
       console.log('connected to ws')
       this.IS_CONNECTED = true
+      this.WS.send(JSON.stringify({
+        directive: 'connect',
+        player_id: store.state.PLAYER_DATA.id,
+        player_secret: store.state.PLAYER_DATA.secret,
+      }))
     }
 
-    this.WS.onmessage = ({
-      data
-    }) => {
-      console.log('data', data)
-      SnakeApp.onlineInstance = JSON.parse(data)
-      paintSnakes()
+    this.WS.onmessage = ({data}) => {
+      store.commit('SET_ONLINE_INSTANCE', JSON.parse(data))
     }
 
+    this.WS.onclose = () => {
+      console.log('F')
+    }
   }
 
-  sendDirection() {
+  sendDirection(direction) {
     if (!this.IS_CONNECTED) return
     this.WS.send(JSON.stringify({
       directive: 'direction',
-      player_id: SnakeApp.playerData.id,
-      direction: nextDirection
+      player_id: store.state.PLAYER_DATA.id,
+      player_secret: store.state.PLAYER_DATA.secret,
+      direction
     }))
   }
   async imready() {
     try {
-      if (!SnakeApp.playerData) return false
-      console.log(this.WS.send)
+      if (!store.state.PLAYER_DATA) return false
       await this.WS.send(JSON.stringify({
         directive: 'im-ready',
-        game_id: SnakeApp.playerData.game_id,
-        player_id: SnakeApp.playerData.id
+        game_id: store.state.PLAYER_DATA.game_id,
+        player_id: store.state.PLAYER_DATA.id,
+        player_secret: store.state.PLAYER_DATA.secret
       }))
-      console.log('vamo')
       return true
     } catch (error) {
       throw error

@@ -1,7 +1,7 @@
 <template>
   <div>
     <login-modal @submit="connect" :hide="hideModal"/>
-    <button v-if="!isConnected" @click="imready">I'm Ready</button>
+    <button v-if="showImReadyBtn" @click="imready">I'm Ready</button>
     <game-canvas></game-canvas>
   </div>
 </template>
@@ -25,6 +25,18 @@ export default {
   computed: {
     isConnected () {
       return this.$store.state.IS_CONNECTED
+    },
+    onlineInstance () {
+      return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
+    },
+    isPlaying () {
+      return this.onlineInstance && this.onlineInstance.flags.started
+    },
+    isIngame () {
+      return !!this.onlineInstance
+    },
+    showImReadyBtn () {
+      return this.isIngame && !this.isPlaying
     }
   },
   beforeCreate () {
