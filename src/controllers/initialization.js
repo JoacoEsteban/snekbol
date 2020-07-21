@@ -9,4 +9,5 @@ window._ = require('lodash')
 window.$ = require('jquery')
 window.Hammer = require('hammerjs')
 
+require('./GoogleAds')
 require('./vue-app')
