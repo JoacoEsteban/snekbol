@@ -1,16 +1,14 @@
+import config from '../config/core.config'
 import store from '../vue/store'
 class ConnectionController {
-  constructor (BASE_URL = 'localhost:5000') {
+  constructor (BASE_URL = config.BASE_URL) {
     this.BASE_URL = BASE_URL
     // ---
     this.WS = null
     this.IS_CONNECTED = false
-  }
-  get HTTP_URL () {
-    return `http://${this.BASE_URL}`
-  }
-  get WS_URL () {
-    return `ws://${this.BASE_URL}`
+
+    this.HTTP_URL =`${config.USE_SSL ? 'https' : 'http'}://${this.BASE_URL}`
+    this.WS_URL =`${config.USE_SSL ? 'wss' : 'ws'}://${this.BASE_URL}`
   }
   async login(name) {
     try {

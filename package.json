@@ -4,18 +4,19 @@
   "description": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "dev": "webpack-dev-server",
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "start": "live-server dist",
     "concurrent": "npm run build && npm run start"
   },
-  "author": "Joaco Esteban <dev.joaco.esteban@gmail.com>",
+  "author": "Joaco Esteban <dev@joacoesteban.com>",
   "license": "ISC",
   "dependencies": {
     "live-server": "^1.2.1"
   },
   "devDependencies": {
     "axios": "^0.19.2",
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
     "hammerjs": "^2.0.8",
     "html-webpack-plugin": "^4.3.0",
@@ -31,6 +32,7 @@
     "vuex": "^3.5.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.0.9"
   }
 }
