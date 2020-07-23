@@ -1,18 +1,29 @@
 import config from '../config/core.config'
 import store from '../vue/store'
+import axios from 'axios'
+
 class ConnectionController {
   constructor (BASE_URL = config.BASE_URL) {
     this.BASE_URL = BASE_URL
     // ---
     this.WS = null
     this.IS_CONNECTED = false
-
+    
     this.HTTP_URL =`${config.USE_SSL ? 'https' : 'http'}://${this.BASE_URL}`
     this.WS_URL =`${config.USE_SSL ? 'wss' : 'ws'}://${this.BASE_URL}`
+
+    this.API = axios.create({
+      baseURL: this.HTTP_URL,
+      timeout: 20000,
+      // headers: {
+      // },
+      // validateStatus: st => (st >= 200 && st < 300) || st === 304
+    })
+    this.ping()
   }
   async login(name) {
     try {
-      const res = await axios.post(this.HTTP_URL + '/login', {
+      const res = await this.API.post('/login', {
         name: name
       })
       console.log('login success', res.data)
@@ -22,6 +33,13 @@ class ConnectionController {
       return true
     } catch (error) {
       console.error(error)
+      throw error
+    }
+  }
+  async ping () {
+    try {
+      await this.API.get('/ping')
+    } catch (error) {
       throw error
     }
   }

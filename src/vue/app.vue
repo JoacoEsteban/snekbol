@@ -29,7 +29,7 @@ export default {
       return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
     },
     isPlaying () {
-      return this.onlineInstance && this.onlineInstance.flags.started
+      return this.onlineInstance && this.onlineInstance.flags.started && !this.onlineInstance.flags.ended
     },
     isIngame () {
       return !!this.onlineInstance
