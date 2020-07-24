@@ -55,16 +55,13 @@ export default {
       this.mainGrid.find('div[cell]').removeClass()
     },
     paintSnake(snake) {
-      
       const classNames = 'snake' + (snake.flags.dead ? ' dead' : '')
 
-      // this.paint(snakeHead, classNames)
       const start = snake.head
       const snakeBody = snake.body
       snakeBody.forEach(segment => {
-        this.paint(start, classNames)
-        // FIXME 1 cell less
         for (let i = 0; i < segment._length; i++) {
+          this.paint(start, classNames)
           switch (segment.direction) {
             case 0:
               start[0] += 1
@@ -79,7 +76,6 @@ export default {
               start[1] += 1
               break
           }
-          this.paint(start, classNames)
         }
       })
     },
