@@ -15,8 +15,9 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import SwipeReceiver from './SwipeReceiver.vue'
+import { coord, OnlineInstance, Nullable, Snake } from '../../../typings/types';
 export default {
   components: {
     SwipeReceiver
@@ -30,7 +31,7 @@ export default {
     }
   },
   computed: {
-    onlineInstance () {
+    onlineInstance (): OnlineInstance {
       return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
     },
   },
@@ -40,21 +41,22 @@ export default {
     }
   },
   methods: {
-    paintCanvas() {
+    paintCanvas():void {
       this.clearBoard()
       this.onlineInstance.flags.started && this.onlineInstance.players.forEach((player) => {
         // if (player.id === playerData.id) mySnake = player.snake
-        this.paintSnake(player.snake)
+        player.snake && this.paintSnake(player.snake)
       })
       this.paintFruit()
     },
-    paintFruit (fruit = this.onlineInstance.fruit) {
-      this.paint(fruit, 'fruit')
+    paintFruit (fruit?:Nullable<coord>):void {
+      !fruit && (fruit = this.onlineInstance.fruit)
+      fruit && this.paint(fruit, 'fruit')
     },
     clearBoard () {
       this.mainGrid.find('div[cell]').removeClass()
     },
-    paintSnake(snake) {
+    paintSnake(snake:Snake) {
       const classNames = 'snake' + (snake.flags.dead ? ' dead' : '')
 
       const start = snake.head
@@ -79,7 +81,7 @@ export default {
         }
       })
     },
-    paint (coords, className) {
+    paint (coords:coord, className:string):void {
       if (!coords) return
       const cell = $(this.mainGrid.children()[coords[0]]).children()[coords[1]]
       cell && $(cell).addClass(className)

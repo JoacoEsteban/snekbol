@@ -5,14 +5,15 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require('path')
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/main.ts',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
   },
   watchOptions: {
     ignored: /node_modules/
   },
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
@@ -39,6 +40,11 @@ module.exports = {
         ],
       },
       {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
         test: /\.vue$/,
         loader: 'vue-loader'
       }
@@ -46,13 +52,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'dist/index.html')
+      template: path.resolve(__dirname, 'public/index.html')
     }),
     new VueLoaderPlugin()
   ],
   resolve: {
       alias: {
-          vue: 'vue/dist/vue.js'
+        vue: 'vue/dist/vue.js'
       },
+      extensions: [ '.tsx', '.ts', '.js' ],
   }
 };

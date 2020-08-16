@@ -4,26 +4,37 @@
 </div>
 </template>
 
-<script>
+<script lang="ts">
+import { OnlineInstance, Nullable, AllowedDirections } from '../../../typings/types';
+
+const _data: {
+  swipeContainerElement: Nullable<Vue | Element | Vue[] | Element[] | EventTarget>
+} = {
+  swipeContainerElement: null
+}
+
 export default {
   data() {
-    return {
+    const data: {
+      HAMMERTIME: Nullable<HammerManager>
+      isMobile: boolean
+    } = {
       HAMMERTIME: null,
-      isMobile: window.isMobile,
-      allowedDirections: ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight']
+      isMobile: window.IS_MOBILE,
     } 
+    return data
   },
   computed: {
-    onlineInstance () {
+    onlineInstance ():OnlineInstance {
       return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
     },
-    isPlaying () {
-      return this.onlineInstance && this.onlineInstance.flags.started
+    isPlaying ():boolean {
+      return !!(this.onlineInstance && this.onlineInstance.flags.started)
     },
-    isIngame () {
+    isIngame ():boolean {
       return !!this.onlineInstance
     },
-    show () {
+    show ():boolean {
       return this.isPlaying
     }
   },
@@ -32,53 +43,52 @@ export default {
     $(window).on('keydown', this.onKeyDown)
   },
   methods: {
-    onKeyDown ({key}) {
+    onKeyDown (event:JQueryEventObject) {
       if (!this.isIngame) return
-      this.inputHandling(key)
+      const direction = this.getDirectionFromEvent(event)
+      if (!direction) return
+      this.inputHandling(direction)
+    },
+    getDirectionFromEvent (e: JQueryEventObject):Nullable<AllowedDirections> {
+      switch (e.keyCode) {
+        case 37: return AllowedDirections.left
+        case 38: return AllowedDirections.up
+        case 37: return AllowedDirections.right
+        case 40: return AllowedDirections.down
+        default: return null
+      }
     },
     setHammer() {
       if (!this.isMobile) return
       console.log(this.$refs['swipe-container'])
-      this.HAMMERTIME = new Hammer.Manager((this.swipeContainerElement = this.$refs['swipe-container']))
-      const swipe = new Hammer.Swipe()
-      this.HAMMERTIME.add([swipe])
-      this.HAMMERTIME.on('swipe', this.onSwipe)
-    },
-    onSwipe ({ angle }) {
-        let direction
-        if (angle < 45 && angle > -45) {
-          direction = 'ArrowRight'
-        } else if (angle < 135 && angle > 45) {
-          direction = 'ArrowDown'
-        } else if (
-          (angle < 180 && angle > 135) ||
-          (angle > -180 && angle < -135)
-        ) {
-          direction = 'ArrowLeft'
-        } else if (angle > -135 && angle < -45) {
-          direction = 'ArrowUp'
-        }
-        console.log(angle, direction)
-        this.inputHandling(direction, true)
-      },
-    inputHandling(key, force) {
-      if (!force && !this.allowedDirections.includes(key)) return
-      let nextDirection = 0
-      switch (key) {
-        case 'ArrowUp':
-            nextDirection = 0
-            break
-        case 'ArrowRight':
-            nextDirection = 1
-            break
-        case 'ArrowDown':
-            nextDirection = 2
-            break
-        case 'ArrowLeft':
-            nextDirection = 3
-            break
+      _data.swipeContainerElement = this.$refs['swipe-container']
+      if (_data.swipeContainerElement instanceof EventTarget) {
+        this.HAMMERTIME = new Hammer.Manager(_data.swipeContainerElement)
+        const swipe = new Hammer.Swipe()
+        this.HAMMERTIME.add([swipe])
+        this.HAMMERTIME.on('swipe', this.onSwipe)
       }
-      CONNECTION.sendDirection(nextDirection)
+    },
+    onSwipe (event:{ angle:number }) {
+      const angle = event.angle
+      let direction:Nullable<AllowedDirections> = null
+
+      if (angle < 45 && angle > -45) {
+        direction = AllowedDirections.right
+      } else if (angle < 135 && angle > 45) {
+        direction = AllowedDirections.down
+      } else if ( (angle < 180 && angle > 135) || (angle > -180 && angle < -135) ) {
+        direction = AllowedDirections.left
+      } else if (angle > -135 && angle < -45) {
+        direction = AllowedDirections.right
+      }
+      if (!direction) return
+
+      console.log(angle, direction)
+      this.inputHandling(direction)
+    },
+    inputHandling(key:AllowedDirections):void {
+      window.CONNECTION.sendDirection(key)
     }
   }
 };

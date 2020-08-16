@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2020",
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "typeRoots": ["./typings"]
+  }
+}

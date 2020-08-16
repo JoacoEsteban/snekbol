@@ -10,8 +10,9 @@
   </div>
 </template>
 
-<script>
-const names = require('../../static/SnakeNames')
+<script lang="ts">
+import names from '../../static/SnakeNames'
+
 export default {
   props: {
     hide: Boolean,

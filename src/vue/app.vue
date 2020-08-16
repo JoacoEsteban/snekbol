@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import LoginModal from './components/LoginModal.vue'
 import GameCanvas from './components/GameCanvas.vue'
 export default {
@@ -17,42 +17,41 @@ export default {
   data() {
     return {
       hideModal: false,
-      isMobile: window.isMobile,
+      isMobile: window.IS_MOBILE,
       swipeContainerElement: null,
+      CONNECTION: window.CONNECTION
     } 
   },
   computed: {
-    isConnected () {
+    isConnected (): boolean {
       return this.$store.state.IS_CONNECTED
     },
     onlineInstance () {
       return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
     },
-    isPlaying () {
+    isPlaying (): boolean {
       return this.onlineInstance && this.onlineInstance.flags.started && !this.onlineInstance.flags.ended
     },
-    isIngame () {
+    isIngame (): boolean {
       return !!this.onlineInstance
     },
-    showImReadyBtn () {
+    showImReadyBtn (): boolean {
       return this.isIngame && !this.isPlaying
     }
   },
-  beforeCreate () {
-    window.ROOT = this.$root
-    window.APP = this
+  beforeCreate ():void {
   },
   methods: {
     async imready() {
       try {
-        this.$store.commit('CONNECTION_CHANGE', (await CONNECTION.imready()) === true)
+        this.$store.commit('CONNECTION_CHANGE', (await this.CONNECTION.imready()) === true)
       } catch (error) {
         console.error('error', error)
       }
     },
-    async connect(name) {
+    async connect(name: string) {
       try {
-        await CONNECTION.login(name)
+        await this.CONNECTION.login(name)
         this.hideModal = true
       } catch (error) {
         throw error

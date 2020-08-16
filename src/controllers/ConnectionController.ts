@@ -1,34 +1,36 @@
 import config from '../config/core.config'
 import store from '../vue/store'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
+import { AllowedDirections } from '../../typings/types'
 
 class ConnectionController {
+  BASE_URL: string
+  WS: WebSocket | null
+  IS_CONNECTED: boolean
+  HTTP_URL: string
+  WS_URL: string
+  API: AxiosInstance
+
   constructor (BASE_URL = config.BASE_URL) {
     this.BASE_URL = BASE_URL
-    // ---
     this.WS = null
     this.IS_CONNECTED = false
-    
     this.HTTP_URL =`${config.USE_SSL ? 'https' : 'http'}://${this.BASE_URL}`
     this.WS_URL =`${config.USE_SSL ? 'wss' : 'ws'}://${this.BASE_URL}`
 
     this.API = axios.create({
       baseURL: this.HTTP_URL,
       timeout: 20000,
-      // headers: {
-      // },
-      // validateStatus: st => (st >= 200 && st < 300) || st === 304
     })
+
     this.ping()
   }
-  async login(name) {
+  async login(name: string) {
     try {
-      const res = await this.API.post('/login', {
-        name: name
-      })
+      const res = await this.API.post('/login', { name })
       console.log('login success', res.data)
       store.commit('SET_PLAYER_DATA', res.data.player)
-      // store.commit('SET_ONLINE_INSTANCE', res.data.game)
+
       this.initializeWebSocket()
       return true
     } catch (error) {
@@ -44,29 +46,30 @@ class ConnectionController {
     }
   }
   initializeWebSocket() {
-    this.WS = new WebSocket(this.WS_URL, 'protocolOne')
+    const ws = this.WS = new WebSocket(this.WS_URL, 'protocolOne')
 
-    this.WS.onopen = (e) => {
+    ws.onopen = (e) => {
       console.log('connected to ws')
       this.IS_CONNECTED = true
-      this.WS.send(JSON.stringify({
+      ws.send(JSON.stringify({
         directive: 'connect',
         player_id: store.state.PLAYER_DATA.id,
         player_secret: store.state.PLAYER_DATA.secret,
       }))
     }
 
-    this.WS.onmessage = ({data}) => {
+    ws.onmessage = ({data}) => {
       store.commit('SET_ONLINE_INSTANCE', JSON.parse(data))
+      store.state.PLAYER_DATA.id
     }
 
-    this.WS.onclose = () => {
+    ws.onclose = () => {
       console.log('F')
     }
   }
 
-  sendDirection(direction) {
-    if (!this.IS_CONNECTED) return
+  sendDirection(direction: AllowedDirections) {
+    if (!this.IS_CONNECTED || !this.WS) return
     this.WS.send(JSON.stringify({
       directive: 'direction',
       player_id: store.state.PLAYER_DATA.id,
@@ -76,8 +79,8 @@ class ConnectionController {
   }
   async imready() {
     try {
-      if (!store.state.PLAYER_DATA) return false
-      await this.WS.send(JSON.stringify({
+      if (!store.state.PLAYER_DATA || !this.WS) return false
+      this.WS.send(JSON.stringify({
         directive: 'im-ready',
         game_id: store.state.PLAYER_DATA.game_id,
         player_id: store.state.PLAYER_DATA.id,
