@@ -7,9 +7,18 @@
 </template>
 
 <script lang="ts">
+
+import Vue from 'Vue'
+
+
+
 import LoginModal from './components/LoginModal.vue'
 import GameCanvas from './components/GameCanvas.vue'
-export default {
+import { OnlineInstance } from '_/typings/types'
+
+
+
+export default Vue.extend({
   components: {
     LoginModal,
     GameCanvas
@@ -26,7 +35,7 @@ export default {
     isConnected (): boolean {
       return this.$store.state.IS_CONNECTED
     },
-    onlineInstance () {
+    onlineInstance (): OnlineInstance {
       return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
     },
     isPlaying (): boolean {
@@ -58,7 +67,7 @@ export default {
       }
     }
   }
-}
+})
 </script>
 
 

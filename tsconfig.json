@@ -8,5 +8,17 @@
     "outDir": "./dist/",
     "noImplicitAny": true,
     "typeRoots": ["./typings"]
-  }
+  },
+  "paths": {
+    "@/*": [
+      "src/*"
+    ],
+    "_/*": [
+      "./*"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.vue"
+  ],
 }

@@ -41,7 +41,7 @@ export default {
     }
   },
   methods: {
-    async submit(e) {
+    async submit(e:Event) {
       e && e.preventDefault()
       this.$emit('submit', this.snakeName)
     }
@@ -75,9 +75,8 @@ export default {
     background-color: transparent;
   }
 
-  .modal-container {
-
-  }
+  // .modal-container {
+  // }
 
   &.hide {
     pointer-events: none;

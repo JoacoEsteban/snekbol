@@ -1,10 +1,10 @@
-const ENV_PROD = process.env.NODE_ENV === 'production'
+const ENV_PROD = false
 
 const config = {
   ENV_PROD,
-  BASE_URL: ENV_PROD ? (process.env.API_BASE_URL || 'snekbol-backend.herokuapp.com') : 'localhost:5000',
+  BASE_URL: 'localhost:5000',
   USE_SSL: ENV_PROD,
-  GOOGLE_ADS_CLIENT: process.env.GOOGLE_ADS_CLIENT || 'ca-pub-2692027370405630'
+  GOOGLE_ADS_CLIENT: 'ca-pub-2692027370405630'
 }
 
 export default config

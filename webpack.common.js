@@ -41,7 +41,8 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        loader: 'ts-loader',
+        // options: { appendTsSuffixTo: [/\.vue$/] },
         exclude: /node_modules/,
       },
       {
@@ -58,8 +59,10 @@ module.exports = {
   ],
   resolve: {
       alias: {
-        vue: 'vue/dist/vue.js'
+        vue: 'vue/dist/vue.js',
+        '@': './src',
+        '_': '.'
       },
-      extensions: [ '.tsx', '.ts', '.js' ],
+      extensions: [ '.tsx', '.ts', '.js', '.vue' ],
   }
 };
