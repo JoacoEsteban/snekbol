@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from '../vue/app.vue'
+import App from '@/vue/app.vue'
 import store from '../vue/store'
 
 

@@ -1,4 +1,7 @@
 {
+  "include": [
+    "src/**/*"
+  ],
   "compilerOptions": {
     "sourceMap": true,
     "strict": true,
@@ -7,18 +10,15 @@
     "moduleResolution": "node",
     "outDir": "./dist/",
     "noImplicitAny": true,
-    "typeRoots": ["./typings"]
+    "typeRoots": ["./typings"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@@/*": [
+        "./*"
+      ]
+    },
   },
-  "paths": {
-    "@/*": [
-      "src/*"
-    ],
-    "_/*": [
-      "./*"
-    ]
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue"
-  ],
 }
