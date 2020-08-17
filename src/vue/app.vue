@@ -7,67 +7,53 @@
 </template>
 
 <script lang="ts">
-
-import Vue from 'Vue'
-
-
-
 import LoginModal from './components/LoginModal.vue'
 import GameCanvas from './components/GameCanvas.vue'
-import { OnlineInstance } from '_/typings/types'
+import { OnlineInstance } from '@@types'
+import { Component, Vue } from 'vue-property-decorator';
 
 
-
-export default Vue.extend({
+@Component({
   components: {
     LoginModal,
     GameCanvas
   },
-  data() {
-    return {
-      hideModal: false,
-      isMobile: window.IS_MOBILE,
-      swipeContainerElement: null,
-      CONNECTION: window.CONNECTION
-    } 
-  },
-  computed: {
-    isConnected (): boolean {
-      return this.$store.state.IS_CONNECTED
-    },
-    onlineInstance (): OnlineInstance {
-      return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
-    },
-    isPlaying (): boolean {
-      return this.onlineInstance && this.onlineInstance.flags.started && !this.onlineInstance.flags.ended
-    },
-    isIngame (): boolean {
-      return !!this.onlineInstance
-    },
-    showImReadyBtn (): boolean {
-      return this.isIngame && !this.isPlaying
-    }
-  },
-  beforeCreate ():void {
-  },
-  methods: {
-    async imready() {
-      try {
-        this.$store.commit('CONNECTION_CHANGE', (await this.CONNECTION.imready()) === true)
-      } catch (error) {
-        console.error('error', error)
-      }
-    },
-    async connect(name: string) {
-      try {
-        await this.CONNECTION.login(name)
-        this.hideModal = true
-      } catch (error) {
-        throw error
-      }
+})
+export default class App extends Vue {
+  hideModal = false
+  isMobile = window.IS_MOBILE
+  swipeContainerElement = null
+  CONNECTION = window.CONNECTION
+
+  get isConnected (): boolean {
+    return this.$store.state.IS_CONNECTED
+  }
+  get onlineInstance (): OnlineInstance {
+    return this.$store.state.ONLINE_INSTANCE && this.$store.state.ONLINE_INSTANCE.game
+  }
+  get isPlaying (): boolean {
+    return this.onlineInstance && this.onlineInstance.flags.started && !this.onlineInstance.flags.ended
+  }
+  get isIngame (): boolean {
+    return !!this.onlineInstance
+  }
+  get showImReadyBtn (): boolean {
+    return this.isIngame && !this.isPlaying
+  } 
+
+  async imready() {
+    try {
+      this.$store.commit('CONNECTION_CHANGE', (await this.CONNECTION.imready()) === true)
+    } catch (error) {
+      console.error('error', error)
     }
   }
-})
+  async connect(name: string) {
+    await this.CONNECTION.login(name)
+    this.hideModal = true
+  }
+
+}
 </script>
 
 

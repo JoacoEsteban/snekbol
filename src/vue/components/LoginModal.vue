@@ -11,42 +11,41 @@
 </template>
 
 <script lang="ts">
-import names from '../../static/SnakeNames'
+import names from '@/static/SnakeNames'
+import * as types from '@@types'
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator';
 
-export default {
-  props: {
-    hide: Boolean,
-  },
-  data() {
-    return {
-      snakeName: names.getOne(),
-      hideLocal: this.$props.hide,
-      kill: this.$props.hide
-    }
-  },
-  watch: {
-    async hide (val) {
-      if (val) {
-        this.kill = false
-        this.hideLocal = true
-        await this.$sleep(500)
-        this.kill = true
-      } else {
-        this.kill = false
-        this.hideLocal = true
-        await this.$sleep()
-        this.kill = true
-        await this.$sleep(500)
-      }
-    }
-  },
-  methods: {
-    async submit(e:Event) {
-      e && e.preventDefault()
-      this.$emit('submit', this.snakeName)
+
+@Component
+export default class LoginModal extends Vue {
+  @Prop(Boolean) readonly hide: types.Nullable<boolean> | undefined
+
+  snakeName = names.getOne()
+  hideLocal = this.$props.hide
+  kill = this.$props.hide
+
+  @Watch('hide')
+  async onHideChange (val: boolean) {
+    if (val) {
+      this.kill = false
+      this.hideLocal = true
+      await this.$sleep(500)
+      this.kill = true
+    } else {
+      this.kill = false
+      this.hideLocal = true
+      await this.$sleep()
+      this.kill = true
+      await this.$sleep(500)
     }
   }
-};
+
+  async submit(e: Event) {
+    e && e.preventDefault()
+    this.$emit('submit', this.snakeName)
+  }
+
+}
 </script>
 
 

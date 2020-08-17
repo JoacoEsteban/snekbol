@@ -1,45 +1,41 @@
 {
   "name": "snekbol",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --open --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
-    "start": "live-server dist",
-    "concurrent": "npm run build && npm run start"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
-  "author": "Joaco Esteban <dev@joacoesteban.com>",
-  "license": "ISC",
   "dependencies": {
-    "live-server": "^1.2.1"
+    "core-js": "^3.6.5",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.2"
   },
   "devDependencies": {
     "@types/hammerjs": "^2.0.36",
     "@types/jquery": "^3.5.1",
     "@types/lodash": "^4.14.159",
     "@types/node": "^14.0.27",
-    "@types/vue": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/cli-plugin-babel": "^4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.0",
+    "@vue/cli-plugin-typescript": "^4.5.0",
+    "@vue/cli-service": "^4.5.0",
+    "@vue/eslint-config-typescript": "^5.0.2",
     "axios": "^0.19.2",
-    "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.6.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
     "hammerjs": "^2.0.8",
-    "html-webpack-plugin": "^4.3.0",
     "jquery": "^3.5.1",
     "lodash": "^4.17.19",
-    "raw-loader": "^4.0.1",
     "sass": "^1.26.10",
-    "sass-loader": "^9.0.2",
-    "style-loader": "^1.2.1",
-    "ts-loader": "^8.0.2",
-    "typescript": "^3.9.7",
-    "vue": "^2.6.11",
-    "vue-loader": "^15.9.3",
+    "sass-loader": "^9.0.3",
+    "typescript": "~3.9.3",
     "vue-template-compiler": "^2.6.11",
     "vuex": "^3.5.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.0.9"
+    "vuex-class": "^0.3.2"
   }
 }

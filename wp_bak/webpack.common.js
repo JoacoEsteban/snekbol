@@ -1,8 +1,6 @@
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const path = require('path')
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import VueLoaderPlugin from 'vue-loader/lib/plugin'
+import path from 'path'
 
 module.exports = {
   entry: './src/main.ts',

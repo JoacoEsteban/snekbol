@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import config from '../config/core.config'
 
 (() => {

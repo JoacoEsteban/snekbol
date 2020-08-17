@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { OnlineInstance, PlayerData } from '../../typings/types'
+import { OnlineInstance, PlayerData } from '@/typings/index'
 
 Vue.use(Vuex)
 
@@ -12,15 +12,15 @@ type VoidMutation<T> = (state: state, val: T) => void
 
 interface Store {
   state: {
-    IS_CONNECTED: boolean,
-    ONLINE_INSTANCE: OnlineInstance,
-    PLAYER_DATA: PlayerData
-  },
+    IS_CONNECTED: boolean;
+    ONLINE_INSTANCE: OnlineInstance;
+    PLAYER_DATA: PlayerData;
+  };
   mutations: {
-    CONNECTION_CHANGE: VoidMutation<boolean>,
-    SET_ONLINE_INSTANCE: VoidMutation<state['ONLINE_INSTANCE']>,
-    SET_PLAYER_DATA: VoidMutation<state['PLAYER_DATA']>
-  }
+    CONNECTION_CHANGE: VoidMutation<boolean>;
+    SET_ONLINE_INSTANCE: VoidMutation<state['ONLINE_INSTANCE']>;
+    SET_PLAYER_DATA: VoidMutation<state['PLAYER_DATA']>;
+  };
 }
 
 const state: Store = {

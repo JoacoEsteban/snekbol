@@ -1,7 +1,7 @@
 import config from '../config/core.config'
 import store from '../vue/store'
 import axios, { AxiosInstance } from 'axios'
-import { AllowedDirections } from '../../typings/types'
+import { AllowedDirections } from '@/typings'
 
 class ConnectionController {
   BASE_URL: string
@@ -39,16 +39,12 @@ class ConnectionController {
     }
   }
   async ping () {
-    try {
-      await this.API.get('/ping')
-    } catch (error) {
-      throw error
-    }
+    await this.API.get('/ping')
   }
   initializeWebSocket() {
     const ws = this.WS = new WebSocket(this.WS_URL, 'protocolOne')
 
-    ws.onopen = (e) => {
+    ws.onopen = () => {
       console.log('connected to ws')
       this.IS_CONNECTED = true
       ws.send(JSON.stringify({
@@ -78,18 +74,14 @@ class ConnectionController {
     }))
   }
   async imready() {
-    try {
-      if (!store.state.PLAYER_DATA || !this.WS) return false
-      this.WS.send(JSON.stringify({
-        directive: 'im-ready',
-        game_id: store.state.PLAYER_DATA.game_id,
-        player_id: store.state.PLAYER_DATA.id,
-        player_secret: store.state.PLAYER_DATA.secret
-      }))
-      return true
-    } catch (error) {
-      throw error
-    }
+    if (!store.state.PLAYER_DATA || !this.WS) return false
+    this.WS.send(JSON.stringify({
+      directive: 'im-ready',
+      game_id: store.state.PLAYER_DATA.game_id,
+      player_id: store.state.PLAYER_DATA.id,
+      player_secret: store.state.PLAYER_DATA.secret
+    }))
+    return true
   }
 }
 

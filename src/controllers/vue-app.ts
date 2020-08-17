@@ -5,16 +5,16 @@ import store from '../vue/store'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $sleep: (time?: number) => Promise<void>
+    $sleep: (time?: number) => Promise<void>;
   }
 }
 
 
 // Vue.config.productionTip = process.env.NODE_ENV === 'production'
-Vue.prototype.$sleep = (time:number) => new Promise(resolve => setTimeout(resolve, time))
+Vue.prototype.$sleep = (time: number) => new Promise(resolve => setTimeout(resolve, time))
 
 const init = () => {
-  var app = new Vue({
+  new Vue({
     el: '#app',
     store,
     render: (h) => h(App),
