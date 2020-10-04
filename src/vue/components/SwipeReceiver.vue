@@ -79,9 +79,9 @@ export default class SwipeReciever extends Vue {
     } else if ( (angle < 180 && angle > 135) || (angle > -180 && angle < -135) ) {
       direction = AllowedDirections.left
     } else if (angle > -135 && angle < -45) {
-      direction = AllowedDirections.right
+      direction = AllowedDirections.up
     }
-    if (!direction) return
+    if (!direction && direction !== 0) return
 
     this.inputHandling(direction)
   }
