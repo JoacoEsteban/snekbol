@@ -1,7 +1,7 @@
 import config from '../config/core.config'
 import store from '../vue/store'
 import axios, { AxiosInstance } from 'axios'
-import { AllowedDirections } from '@/typings'
+import { AllowedDirections, AllowedDirectives } from '@/typings'
 
 class ConnectionController {
   BASE_URL: string
@@ -11,12 +11,12 @@ class ConnectionController {
   WS_URL: string
   API: AxiosInstance
 
-  constructor (BASE_URL = config.BASE_URL) {
+  constructor(BASE_URL = config.BASE_URL) {
     this.BASE_URL = BASE_URL
     this.WS = null
     this.IS_CONNECTED = false
-    this.HTTP_URL =`${config.USE_SSL ? 'https' : 'http'}://${this.BASE_URL}`
-    this.WS_URL =`${config.USE_SSL ? 'wss' : 'ws'}://${this.BASE_URL}`
+    this.HTTP_URL = `${config.USE_SSL ? 'https' : 'http'}://${this.BASE_URL}`
+    this.WS_URL = `${config.USE_SSL ? 'wss' : 'ws'}://${this.BASE_URL}`
 
     this.API = axios.create({
       baseURL: this.HTTP_URL,
@@ -38,7 +38,7 @@ class ConnectionController {
       throw error
     }
   }
-  async ping () {
+  async ping() {
     await this.API.get('/ping')
   }
   initializeWebSocket() {
@@ -48,14 +48,16 @@ class ConnectionController {
       console.log('connected to ws')
       this.IS_CONNECTED = true
       ws.send(JSON.stringify({
-        directive: 'connect',
+        directive: AllowedDirectives.CONNECT,
         player_id: store.state.PLAYER_DATA.id,
         player_secret: store.state.PLAYER_DATA.secret,
       }))
     }
 
-    ws.onmessage = ({data}) => {
-      store.commit('SET_ONLINE_INSTANCE', JSON.parse(data))
+    ws.onmessage = ({ data }) => {
+      data = JSON.parse(data)
+      if (typeof data === 'string') data = JSON.parse(data)
+      store.commit('SET_ONLINE_INSTANCE', data)
       store.state.PLAYER_DATA.id
     }
 
@@ -67,7 +69,7 @@ class ConnectionController {
   sendDirection(direction: AllowedDirections) {
     if (!this.IS_CONNECTED || !this.WS) return
     this.WS.send(JSON.stringify({
-      directive: 'direction',
+      directive: AllowedDirectives.DIRECTION,
       player_id: store.state.PLAYER_DATA.id,
       player_secret: store.state.PLAYER_DATA.secret,
       direction
@@ -76,7 +78,7 @@ class ConnectionController {
   async imready() {
     if (!store.state.PLAYER_DATA || !this.WS) return false
     this.WS.send(JSON.stringify({
-      directive: 'im-ready',
+      directive: AllowedDirectives.IM_READY,
       game_id: store.state.PLAYER_DATA.game_id,
       player_id: store.state.PLAYER_DATA.id,
       player_secret: store.state.PLAYER_DATA.secret

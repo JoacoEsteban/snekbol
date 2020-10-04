@@ -1,12 +1,10 @@
-import * as lodash from 'lodash'
-
 import ConnectionController from '../controllers/ConnectionController'
 
 declare global {
   interface Window {
     INITIALIZED: boolean;
     CONNECTION: ConnectionController;
-    _: lodash.LoDashStatic;
+    _: _.LoDashStatic;
     $: JQueryStatic;
     Hammer: HammerStatic;
     IS_MOBILE: boolean;
@@ -27,6 +25,12 @@ export enum AllowedDirections {
   right = 1,
   down = 2,
   left = 3,
+}
+
+export enum AllowedDirectives {
+  CONNECT = 'connect',
+  IM_READY = 'imready',
+  DIRECTION = 'direction',
 }
 
 export interface OnlineInstance {
